@@ -15,7 +15,7 @@ const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3002;
 //默认每6个小时检查一次
 const cronSchedule = process.env.CRON_SCHEDULE || '0 */6 * * *';
 
-console.log('开始初始化服务器...');
+console.log('开始初始化服务器...,端口:',port);
 
 app.prepare().then(() => {
   createServer((req, res) => {
