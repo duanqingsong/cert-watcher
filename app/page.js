@@ -8,6 +8,7 @@ import DomainDrawer from '@/components/DomainDrawer';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import { toast } from 'react-hot-toast';
 import { formatDate, formatCountdown, formatRelativeTime } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 function getExpiryColor(expiryDate) {
   if (!expiryDate) return 'text-gray-500';
@@ -30,6 +31,7 @@ export default function Home() {
   const [domainToDelete, setDomainToDelete] = useState(null);
   const [editingDomain, setEditingDomain] = useState(null);
   const [checkingDomains, setCheckingDomains] = useState({});
+  const router = useRouter();
 
   useEffect(() => {
     fetchDomains();
@@ -41,7 +43,12 @@ export default function Home() {
       setDomains(response.data);
     } catch (error) {
       console.error('获取域名列表失败:', error);
-      toast.error('获取域名列表失败');
+      if (error.response && error.response.status === 401) {
+        // 如果是未授权错误，重定向到登录页面
+        router.push('/login');
+      } else {
+        toast.error('获取域名列表失败');
+      }
     }
   };
 
@@ -144,11 +151,26 @@ export default function Home() {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await axios.post('/api/auth/logout');
+      router.push('/login');
+    } catch (error) {
+      console.error('登出失败:', error);
+      toast.error('登出失败');
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">HTTPS 证书监控</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold text-primary">HTTPS 证书监控</h1>
+        <Button onClick={handleLogout} variant="outline">
+          登出
+        </Button>
+      </div>
       <div className="flex space-x-2 mb-4">
-        <Button onClick={openDrawer}>
+        <Button onClick={openDrawer} className="bg-primary text-primary-foreground hover:bg-primary/90">
           <Plus className="mr-2 h-4 w-4" /> 添加新域名
         </Button>
         <Button 

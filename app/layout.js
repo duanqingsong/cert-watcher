@@ -1,3 +1,5 @@
+'use client';
+
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from 'react-hot-toast';
@@ -12,11 +14,6 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
 });
-
-export const metadata = {
-  title: "HTTPS 证书监控系统",
-  description: "监控和管理您的域名 HTTPS 证书",
-};
 
 export default function RootLayout({ children }) {
   return (
