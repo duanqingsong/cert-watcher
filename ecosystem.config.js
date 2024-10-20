@@ -5,17 +5,15 @@ const path_NPM = path.join( path_NODEJS, 'node_modules', 'npm', 'bin', 'npm-cli.
 module.exports = {
   apps : [{
     name: "cert-watcher-3009",
-    script: "server.js",
-    instances: 1,
-    autorestart: true,
-    watch: false,
-    max_memory_restart: "1G",
+    script: path_NPM,
+    args: 'start',
+    autorestart: false,
     env_production: {
-      NODE_ENV: "production",
-      PORT: 3009
-    }
-  }]
+      NODE_ENV: 'production',
+    },
+  }],
+
 };
 
 // 使用方法
-//  pm2 start ecosystem.config.js --env production
+//  pm2 reload ecosystem.config.js --env production
