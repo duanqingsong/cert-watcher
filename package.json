@@ -3,11 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV= node server.js",
+    "dev": "cross-env NODE_ENV=development node server.js",
     "build": "next build",
-    "start": "node server.js",
-    "lint": "next lint",
-    "start:prod": "cross-env NODE_ENV=production node server.js"
+    "start": "cross-env NODE_ENV=production node server.js",
+    "lint": "next lint"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
@@ -34,6 +33,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/parser": "^5.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
     "postcss": "^8",

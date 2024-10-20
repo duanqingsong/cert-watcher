@@ -11,12 +11,12 @@ export async function POST(request) {
     
     const response = NextResponse.json({ 
       success: true, 
-      user: { username } // 添加用户信息
+      user: { username }
     });
     response.cookies.set('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax',
       maxAge: 3600, // 1小时
       path: '/',
     });

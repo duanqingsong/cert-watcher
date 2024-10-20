@@ -34,13 +34,11 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    fetchDomains();
-  }, []);
-
-  useEffect(() => {
     const user = localStorage.getItem('user');
     if (!user) {
-      router.push('/login');
+      router.replace('/login');
+    } else {
+      fetchDomains();
     }
   }, []);
 

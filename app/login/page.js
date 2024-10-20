@@ -33,7 +33,10 @@ export default function LoginPage() {
         localStorage.setItem('user', JSON.stringify(response.data.user));
         toast.success('登录成功');
         console.log('准备跳转到首页');
-        router.push('/');
+        // 添加一个短暂的延迟
+        setTimeout(() => {
+          router.replace('/');
+        }, 100);
         console.log('跳转指令已发出');
       } else {
         toast.error('登录失败');
