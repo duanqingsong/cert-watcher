@@ -169,33 +169,35 @@ export default function Home() {
           登出
         </Button>
       </div>
-      <div className="flex space-x-2 mb-4">
-        <Button onClick={openDrawer} className="bg-primary text-primary-foreground hover:bg-primary/90">
-          <Plus className="mr-2 h-4 w-4" /> 添加新域名
-        </Button>
-        <Button 
-          onClick={handleRefresh} 
-          disabled={isRefreshing} 
-          variant="secondary"
-          className="transition-colors duration-300"
-        >
-          <RotateCw className={`mr-2 h-4 w-4 transition-transform duration-300 ${isRefreshing ? 'animate-spin' : ''}`} />
-          刷新列表
-        </Button>
-        <Button 
-          variant="secondary" 
-          onClick={handleCheckAll}
-          disabled={isCheckingAll}
-          className="transition-colors duration-300"
-        >
-          <RefreshCw className={`mr-2 h-4 w-4 ${isCheckingAll ? 'animate-spin' : ''}`} />
-          检查所有证书
-        </Button>
+      <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
+        <div className="flex space-x-2">
+          <Button onClick={openDrawer} className="bg-primary text-primary-foreground hover:bg-primary/90">
+            <Plus className="mr-2 h-4 w-4" /> 添加新域名
+          </Button>
+          <Button 
+            onClick={handleRefresh} 
+            disabled={isRefreshing} 
+            variant="secondary"
+            className="transition-colors duration-300"
+          >
+            <RotateCw className={`mr-2 h-4 w-4 transition-transform duration-300 ${isRefreshing ? 'animate-spin' : ''}`} />
+            刷新列表
+          </Button>
+          <Button 
+            variant="secondary" 
+            onClick={handleCheckAll}
+            disabled={isCheckingAll}
+            className="transition-colors duration-300"
+          >
+            <RefreshCw className={`mr-2 h-4 w-4 ${isCheckingAll ? 'animate-spin' : ''}`} />
+            检查所有证书
+          </Button>
+        </div>
       </div>
 
       {/* 域名列表 */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white">
+      <div className="overflow-x-auto bg-white rounded-lg shadow-md">
+        <table className="min-w-full">
           <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-2">网站名称</th>
