@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
   
 
 echo Pulling the latest code...  
-call git pull origin main && (
+call git pull origin master && (
 
 	call yarn && (
 		
