@@ -9,7 +9,10 @@ export async function POST(request) {
   if (username === 'travelx' && password === 'travelX@2024') {
     const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1h' });
     
-    const response = NextResponse.json({ success: true });
+    const response = NextResponse.json({ 
+      success: true, 
+      user: { username } // 添加用户信息
+    });
     response.cookies.set('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

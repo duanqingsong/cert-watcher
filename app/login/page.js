@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,13 +15,26 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  useEffect(() => {
+    // 检查本地存储中是否有用户信息
+    const user = localStorage.getItem('user');
+    if (user) {
+      router.push('/');
+    }
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
       const response = await axios.post('/api/auth/login', { username, password });
+      console.log('登录响应:', response.data);
       if (response.data.success) {
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        toast.success('登录成功');
+        console.log('准备跳转到首页');
         router.push('/');
+        console.log('跳转指令已发出');
       } else {
         toast.error('登录失败');
       }

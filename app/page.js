@@ -37,6 +37,13 @@ export default function Home() {
     fetchDomains();
   }, []);
 
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (!user) {
+      router.push('/login');
+    }
+  }, []);
+
   const fetchDomains = async () => {
     try {
       const response = await axios.get('/api/domains');
@@ -154,10 +161,10 @@ export default function Home() {
   const handleLogout = async () => {
     try {
       await axios.post('/api/auth/logout');
+      localStorage.removeItem('user');
       router.push('/login');
     } catch (error) {
-      console.error('登出失败:', error);
-      toast.error('登出失败');
+      console.error('登出错误:', error);
     }
   };
 
