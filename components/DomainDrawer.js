@@ -88,7 +88,7 @@ export default function DomainDrawer({ isOpen, onClose, onSave, domain }) {
 
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent>
+      <DrawerContent className="max-w-md w-full mx-auto">
         <DrawerHeader>
           <DrawerTitle>{domain ? '编辑域名' : '添加新域名'}</DrawerTitle>
         </DrawerHeader>

@@ -9,6 +9,19 @@ import DomainDrawer from '@/components/DomainDrawer';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import { toast } from 'react-hot-toast';
 
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }).replace(/\//g, '-');
+}
+
 function formatCountdown(expiryDate) {
   const now = new Date();
   const diff = expiryDate - now;
@@ -34,7 +47,7 @@ function formatLastChecked(date) {
   if (minutes < 60) return `${minutes}分钟前`;
   if (hours < 24) return `${hours}小时前`;
   if (days < 30) return `${days}天前`;
-  return new Date(date).toLocaleDateString();
+  return formatDate(date);
 }
 
 export default function Home() {
@@ -202,7 +215,7 @@ export default function Home() {
                   <TableCell>{domain.name}</TableCell>
                   <TableCell>{domain.domain}</TableCell>
                   <TableCell>{domain.issuer}</TableCell>
-                  <TableCell>{expiryDate.toLocaleString()}</TableCell>
+                  <TableCell>{formatDate(domain.expiryDate)}</TableCell>
                   <TableCell className={isExpiringSoon ? 'text-red-500 font-bold' : ''}>
                     {countdown}
                   </TableCell>
