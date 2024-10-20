@@ -7,10 +7,12 @@ export default async function handler(req, res) {
     await dbConnect();
 
     try {
+      console.log('开始执行定时任务...');
       const domains = await Domain.find({});
       for (const domain of domains) {
         await updateDomainCertInfo(domain._id);
       }
+      console.log('定时任务执行完成');
       res.status(200).json({ success: true });
     } catch (error) {
       console.error('定时检查失败', error);

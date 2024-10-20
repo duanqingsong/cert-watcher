@@ -112,3 +112,6 @@ dist
 # Temporary folders
 tmp/
 temp/
+
+# ... 其他忽略项
+domains.sqlite
