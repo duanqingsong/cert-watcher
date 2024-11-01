@@ -168,7 +168,7 @@ export default function Home() {
   // 登出
   const handleLogout = async () => {
     try {
-      const result=await signOut({redirect:true,callbackUrl:'/login'});
+      await signOut({redirect:true,callbackUrl:'/login'});
     } catch (error) {
       console.error('登出错误:', error);
     }
