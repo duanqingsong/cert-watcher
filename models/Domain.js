@@ -6,7 +6,7 @@ const getDb = require('../lib/db');
  */
 async function getAllDomains() {
   const db = await getDb();
-  return db.all('SELECT * FROM domains');
+  return db.all('SELECT * FROM domains order by expiryDate');
 }
 
 /**
