@@ -9,6 +9,7 @@ import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import { toast } from 'react-hot-toast';
 import { formatDate, formatCountdown, formatRelativeTime } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import { signOut } from "next-auth/react"
 
 function getExpiryColor(expiryDate) {
   if (!expiryDate) return 'text-gray-500';
@@ -158,9 +159,7 @@ export default function Home() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('/api/auth/logout');
-      localStorage.removeItem('user');
-      router.push('/login');
+      signOut({redirect:true});
     } catch (error) {
       console.error('登出错误:', error);
     }

@@ -1,0 +1,23 @@
+{
+  "root": true,
+  "extends": ["eslint:recommended","next/core-web-vitals","next"],
+  "ignorePatterns": ["node_modules"],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["*.js","*.jsx"],
+      "parser": "espree",
+      "parserOptions": {
+        "ecmaVersion": 2020,
+        "babelOptions":{
+          "presets": ["next/babel"]
+        }
+      }
+    }
+  ]
+}
+
