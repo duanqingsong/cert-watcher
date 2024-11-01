@@ -26,3 +26,8 @@ module.exports = {
 
 // 使用方法
 //  pm2 reload ecosystem.config.js --env production
+
+// "dev": "cross-env NODE_ENV= node server.js echo http://localhost:3009/",
+    // "build": "next build",
+    // "start": "cross-env NODE_ENV=production node server.js",
+    // "lint": "next lint"

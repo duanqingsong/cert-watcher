@@ -10,19 +10,23 @@
 
 # 启动方式
 
+## 开发模式
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+```
+## 生产模式
+```bash
+npm run build
+npm run start
+
+#or 
+yarn build
+yarn start
 ```
 
-// "dev": "cross-env NODE_ENV= node server.js echo http://localhost:3009/",
-    // "build": "next build",
-    // "start": "cross-env NODE_ENV=production node server.js",
-    // "lint": "next lint"
+
 
 

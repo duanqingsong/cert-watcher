@@ -4,10 +4,7 @@ import { default as nextAuthMiddleware } from "next-auth/middleware"
 export const withAuthorization = (next) => {
   return async (request, _next) => {
     const pathname = request.nextUrl.pathname;
-    //console.log("判断匹配admin，pathname==>",pathname)
-    //   /((admin).*)
-    // 不含 images,login,api,_next
-    const reg = new RegExp('^/(?!images|login|api|_next)');
+    const reg = new RegExp('^/(?!images|login|api|_next|favicon.svg|).*$');
     const needAuth=reg.test(pathname)
     if (needAuth) {
       return nextAuthMiddleware(request,_next)

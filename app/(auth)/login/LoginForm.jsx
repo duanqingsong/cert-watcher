@@ -25,7 +25,6 @@ const LoginForm = (props) => {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log(`Changing ${name} to ${value}`); // 添加日志
     setData({
       ...data,
       [name]: value,
@@ -36,15 +35,13 @@ const LoginForm = (props) => {
     e.preventDefault();
     setError(origin => ({ ...origin, callbackError: '' }));
     try {
-      const backUrl = callbackUrl || "";
+      const backUrl = callbackUrl || "/";
       setLoading(true);
       const result = await signIn("credentials", {
         redirect: false,
         callbackUrl: backUrl,
         ...data
       });
-      console.log('result', result);
-
       if (!result?.error) {
         router.push(backUrl);
       } else {

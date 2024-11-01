@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Button } from "@/components/ui/button";
 import { Plus, RotateCw, RefreshCw, Edit, CheckCircle, Trash2 } from 'lucide-react';
 import DomainDrawer from '@/components/DomainDrawer';
@@ -10,6 +9,7 @@ import { toast } from 'react-hot-toast';
 import { formatDate, formatCountdown, formatRelativeTime } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { signOut } from "next-auth/react"
+import { checkAllDomain, checkDomainById, deleteDomain, getAllDomain, saveDomain } from '@/actions/domain-actions';
 
 function getExpiryColor(expiryDate) {
   if (!expiryDate) return 'text-gray-500';
@@ -35,18 +35,19 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const user = localStorage.getItem('user');
-    if (!user) {
-      router.replace('/login');
-    } else {
-      fetchDomains();
-    }
+    fetchDomains();
   }, []);
 
+  // 获取域名列表
   const fetchDomains = async () => {
     try {
-      const response = await axios.get('/api/domains');
-      setDomains(response.data);
+      setIsRefreshing(true);
+      const result=await getAllDomain();
+      if (result.success==1) {
+        setDomains(result.data);
+      }else{
+        toast.error(result.message);
+      }
     } catch (error) {
       console.error('获取域名列表失败:', error);
       if (error.response && error.response.status === 401) {
@@ -55,22 +56,19 @@ export default function Home() {
       } else {
         toast.error('获取域名列表失败');
       }
+    }finally{
+      setIsRefreshing(false);
     }
   };
 
   const openDrawer = () => setIsDrawerOpen(true);
   const closeDrawer = () => setIsDrawerOpen(false);
-
+  // 保存域名
   const handleSaveDomain = async (domainData) => {
     try {
-      if (editingDomain) {
-        // 编辑现有域名
-        await axios.put(`/api/domains/${editingDomain.id}`, domainData);
-        toast.success('域名已更新');
-      } else {
-        // 创建新域名
-        await axios.post('/api/domains', domainData);
-        toast.success('新域名已添加');
+      const result=await saveDomain({...domainData,id:editingDomain?.id||''});
+      if(result.success){
+        toast.success('域名已保存');
       }
       await fetchDomains();
       closeDrawer();
@@ -82,7 +80,7 @@ export default function Home() {
       return { success: false, error: error.response?.data?.error || '保存域名失败' };
     }
   };
-
+  // 刷新域名列表
   const handleRefresh = async () => {
     if (isRefreshing) return;
     setIsRefreshing(true);
@@ -96,14 +94,18 @@ export default function Home() {
       setIsRefreshing(false);
     }
   };
-
+  // 检查所有证书
   const handleCheckAll = async () => {
     if (isCheckingAll) return;
     setIsCheckingAll(true);
     try {
-      await axios.post('/api/check-all');
-      toast.success('所有证书检查完成');
-      await fetchDomains();
+      const result=await checkAllDomain();
+      if (result.success) {
+        toast.success('所有证书检查完成');
+        await fetchDomains();
+      }else{
+        toast.error(result.message);
+      }
     } catch (error) {
       console.error('检查所有证书失败:', error);
       toast.error('检查所有证书失败');
@@ -111,18 +113,23 @@ export default function Home() {
       setIsCheckingAll(false);
     }
   };
-
+  // 删除域名
   const handleDelete = (domain) => {
     setDomainToDelete(domain);
     setDeleteConfirmOpen(true);
   };
-
+  // 确认删除
   const confirmDelete = async () => {
     if (!domainToDelete) return;
     try {
-      await axios.delete(`/api/domains/${domainToDelete.id}`);
-      toast.success('域名已删除');
-      await fetchDomains();
+      const result =await deleteDomain(domainToDelete.id);
+      if(result.success){
+        toast.success('域名已删除');
+        await fetchDomains();
+      }else{
+        toast.error(result.message);
+      }
+      
     } catch (error) {
       console.error('删除域名失败:', error);
       toast.error('删除域名失败');
@@ -131,24 +138,25 @@ export default function Home() {
       setDomainToDelete(null);
     }
   };
-
+  // 编辑域名
   const handleEdit = (domain) => {
     // 这里可以打开编辑抽屉或导航到编辑页面
     setIsDrawerOpen(true);
     // 假设您的 DomainDrawer 组件接受一个 domain 属性来预填表单
     setEditingDomain(domain);
   };
-
+  // 检查证书
   const handleCheckCertificate = async (domainId) => {
     setCheckingDomains(prev => ({ ...prev, [domainId]: true }));
     try {
-      const response = await axios.post(`/api/domains/${domainId}`, { action: 'check' });
-      if (response.status === 200) {
+      const result= await checkDomainById(domainId);
+      if (result.success) {
         toast.success('证书状态已更新');
         await fetchDomains();
       } else {
-        throw new Error(response.data.error || '检查证书状态失败');
+        throw new Error(result.error || '检查证书状态失败');
       }
+      
     } catch (error) {
       console.error('检查证书状态时出错:', error);
       toast.error(error.response?.data?.details || error.message || '检查证书状态时发生错误');
@@ -157,9 +165,10 @@ export default function Home() {
     }
   };
 
+  // 登出
   const handleLogout = async () => {
     try {
-      signOut({redirect:true});
+      const result=await signOut({redirect:true,callbackUrl:'/login'});
     } catch (error) {
       console.error('登出错误:', error);
     }
@@ -214,7 +223,7 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {domains.map((domain) => (
+            {domains&&domains.length>0&&domains.map((domain) => (
               <tr key={domain.id} className="border-b">
                 <td className="px-4 py-2">{domain.name}</td>
                 <td className="px-4 py-2">{domain.domain}</td>
