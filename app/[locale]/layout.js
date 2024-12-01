@@ -26,12 +26,6 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function LocaleLayout({ children, params }) {
-  return (
-    <>
-      <html lang={params.locale}>
-        {children}
-      </html>
-    </>
-  );
+export default function LocaleLayout({ children }) {
+  return children;
 } 

@@ -4,15 +4,20 @@ import AuthProvider from '@/Providers/AuthProvider'
 import { ThemeProvider } from "@/Providers/ThemeContext";
 import I18nProvider from '@/components/I18nProvider'
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, params }) {
+  const locale = params?.locale || 'zh'
+  
   return (
-    <html>
+    <html lang={locale} suppressHydrationWarning>
       <body className="antialiased">
         <ThemeProvider 
           attribute="class" 
-          defaultTheme="dark" 
-          enableSystem
-          disableTransitionOnChange>
+          defaultTheme="dark"
+          enableSystem={false}
+          storageKey="theme-preference"
+          forcedTheme={undefined}
+          disableTransitionOnChange={false}
+        >
           <I18nProvider>
             <AuthProvider>
               {children}
