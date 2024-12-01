@@ -11,18 +11,12 @@ import { useRouter } from 'next/navigation';
 import { signOut } from "next-auth/react"
 import { checkAllDomain, checkDomainById, deleteDomain, getAllDomain, saveDomain } from '@/actions/domain-actions';
 import { ModeToggle } from '@/components/ModeToggle';
-import {
-  Table,
-  TableBody,
+import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,
   TableCaption,
-  TableCell,
   TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from "@/components/ui/table"
 import { EditActions } from '@/components/EditActions';
-
+import { LanguageSwitch } from '@/components/LanguageSwitch'
 
 function getExpiryColor(expiryDate) {
   if (!expiryDate) return '';
@@ -57,6 +51,7 @@ export default function Home() {
     try {
       setIsRefreshing(true);
       const result=await getAllDomain();
+      console.log("getAllDomain result==>",result)
       if (result.success==1) {
         setDomains(result.data);
       }else{
@@ -193,12 +188,13 @@ export default function Home() {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold text-primary">HTTPS 证书监控</h1>
         <div className="flex space-x-2">
+          {/* 切换语言 */}
+          <LanguageSwitch />
+          {/* 切换主题 */}
+          <ModeToggle />
           <Button onClick={handleLogout} variant="outline">
             登出
           </Button>
-          {/* 切换主题 */}
-          <ModeToggle />
-          
         </div>
       </div>
       <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md mb-4">

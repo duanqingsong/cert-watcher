@@ -1,9 +1,9 @@
-//'use client';
-
+// 'use client'
 import "./globals.css";
 import { Toaster } from 'react-hot-toast';
 import AuthProvider from '@/Providers/AuthProvider'
 import { ThemeProvider } from "@/Providers/ThemeContext";
+import I18nProvider from '@/components/I18nProvider'
 
 export const metadata = {
   title: "HTTPS 证书监控系统",
@@ -14,24 +14,23 @@ export const metadata = {
   }
 };
 
-
-export default function RootLayout({ children }) {
+export default function LocaleLayout({ children, params }) {
   return (
-    <html lang="zh">
-      <body
-        className={`antialiased`}
-      >
+    <html lang={params.locale}>
+      <body className="antialiased">
         <ThemeProvider 
           attribute="class" 
           defaultTheme="dark" 
           enableSystem
           disableTransitionOnChange>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
+          <I18nProvider>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </I18nProvider>
         </ThemeProvider>
         <Toaster />
       </body>
     </html>
   );
-}
+} 

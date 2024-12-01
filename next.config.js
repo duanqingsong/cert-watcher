@@ -1,14 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    remotePatterns: [
-      {protocol: 'https',hostname: 'images.pexels.com',port: '',pathname: '/photos/**',},
-    ],
-    domains: ['certs.utour.xin','localhost:3009'],
-    deviceSizes: [640,750,828,1080,1200,1920,2048,3840],
-    imageSizes: [16,32,48,64,96,128,256,384],
-    minimumCacheTTL: 60,
-  },
+  // 移除 i18n 配置，因为我们使用中间件来处理
 }
 
 module.exports = nextConfig

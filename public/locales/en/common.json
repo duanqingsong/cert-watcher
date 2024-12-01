@@ -1,0 +1,15 @@
+{
+  "title": "My App",
+  "login": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign In",
+    "error": "Invalid email or password"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "settings": "Settings"
+  }
+} 

@@ -12,15 +12,16 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
- 
+import { useTranslation } from 'react-i18next'
 
 const LoginForm = (props) => {
-  const { searchParams } = props;
+  const { searchParams,params } = props;
   const { callbackUrl, error: authError } = searchParams;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(authError);
   const [data, setData] = useState({ username: '', password: '' });
   const router = useRouter();
+  const { t } = useTranslation()
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -35,13 +36,15 @@ const LoginForm = (props) => {
     e.preventDefault();
     setError(origin => ({ ...origin, callbackError: '' }));
     try {
-      const backUrl = callbackUrl || "/";
+      const backUrl = callbackUrl || `/${params.locale}`;
       setLoading(true);
       const result = await signIn("credentials", {
         redirect: false,
         callbackUrl: backUrl,
         ...data
       });
+      console.log("result==>",result)
+      console.log("backUrl==>",backUrl)
       if (!result?.error) {
         router.push(backUrl);
       } else {
@@ -65,7 +68,7 @@ const LoginForm = (props) => {
         type="text"
         id="username"
         name="username"
-        placeholder='输入用户名'
+        placeholder={t('login.username')}
         onChange={handleChange}
       />
       <Input
@@ -73,7 +76,7 @@ const LoginForm = (props) => {
         type="password"
         id="password"
         name="password"
-        placeholder='输入密码'
+        placeholder={t('login.password')}
         onChange={handleChange}
       />
       <Button
@@ -81,7 +84,7 @@ const LoginForm = (props) => {
         className="text-base w-full py-6 mt-3 mb-3"
       >
         {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-        {'登录'}
+        { t('login.submit')}
       </Button>
       {(error?.callbackError || error?.message)&&<Alert variant="destructive">
         <ExclamationTriangleIcon className="h-4 w-4" />
