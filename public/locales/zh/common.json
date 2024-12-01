@@ -1,5 +1,5 @@
 {
-  "title": "我的应用",
+  "title": "HTTPS 证书监控",
   "login": {
     "title": "登录",
     "username": "用户名",
@@ -57,5 +57,15 @@
         "checkCert": "检查证书状态失败"
       }
     }
+  },
+  "error": "错误",
+  "tryAgainLater": "稍后重试",
+  "time": {
+    "expired": "已过期",
+    "justNow": "刚刚",
+    "minutesAgo": "{{minutes}}分钟前",
+    "hoursAgo": "{{hours}}小时前",
+    "daysAgo": "{{days}}天前",
+    "countdown": "{{days}}天 {{hours}}小时 {{minutes}}分钟"
   }
 } 

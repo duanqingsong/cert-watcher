@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Plus, RotateCw, RefreshCw, Edit, CheckCircle, Trash2 } from 'lucide-react';
+import { Plus, RotateCw, RefreshCw, CheckCircle } from 'lucide-react';
 import DomainEditor from '@/components/DomainEditor';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import { toast } from 'react-hot-toast';
@@ -11,10 +11,7 @@ import { useRouter } from 'next/navigation';
 import { signOut } from "next-auth/react"
 import { checkAllDomain, checkDomainById, deleteDomain, getAllDomain, saveDomain } from '@/actions/domain-actions';
 import { ModeToggle } from '@/components/ModeToggle';
-import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,
-  TableCaption,
-  TableFooter,
-} from "@/components/ui/table"
+import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from "@/components/ui/table"
 import { EditActions } from '@/components/EditActions';
 import { LanguageSwitch } from '@/components/LanguageSwitch'
 import { useTranslation } from 'react-i18next'
@@ -95,8 +92,7 @@ export default function Home() {
       await fetchDomains();
       toast.success(t('domain.messages.refreshed'));
     } catch (error) {
-      //console.error('刷新域名列表失败:', error);
-      toast.error('刷新域名列表失败');
+      toast.error(t('domain.messages.error.refresh'));
     } finally {
       setIsRefreshing(false);
     }
@@ -106,16 +102,15 @@ export default function Home() {
     if (isCheckingAll) return;
     setIsCheckingAll(true);
     try {
-      const result=await checkAllDomain();
+      const result = await checkAllDomain();
       if (result.success) {
-        toast.success('所有证书检查完成');
+        toast.success(t('domain.messages.allChecked'));
         await fetchDomains();
-      }else{
+      } else {
         toast.error(result.message);
       }
     } catch (error) {
-      //console.error('检查所有证书失败:', error);
-      toast.error('检查所有证书失败');
+      toast.error(t('domain.messages.error.checkAll'));
     } finally {
       setIsCheckingAll(false);
     }
@@ -129,17 +124,15 @@ export default function Home() {
   const confirmDelete = async () => {
     if (!domainToDelete) return;
     try {
-      const result =await deleteDomain(domainToDelete.id);
-      if(result.success){
-        toast.success('域名已删除');
+      const result = await deleteDomain(domainToDelete.id);
+      if (result.success) {
+        toast.success(t('domain.messages.deleted'));
         await fetchDomains();
-      }else{
+      } else {
         toast.error(result.message);
       }
-      
     } catch (error) {
-      //console.error('删除域名失败:', error);
-      toast.error('删除域名失败');
+      toast.error(t('domain.messages.error.delete'));
     } finally {
       setDeleteConfirmOpen(false);
       setDomainToDelete(null);
@@ -156,17 +149,16 @@ export default function Home() {
   const handleCheckCertificate = async (domainId) => {
     setCheckingDomains(prev => ({ ...prev, [domainId]: true }));
     try {
-      const result= await checkDomainById(domainId);
+      const result = await checkDomainById(domainId);
       if (result.success) {
-        toast.success('证书状态已更新');
+        toast.success(t('domain.messages.certUpdated'));
         await fetchDomains();
       } else {
-        throw new Error(result.error || '检查证书状态失败');
+        throw new Error(result.error || t('domain.messages.error.checkCert'));
       }
-      
     } catch (error) {
-      console.error('检查证书状态时出错:', error);
-      toast.error(error.response?.data?.details || error.message || '检查证书状态时发生错误');
+      console.error(t('domain.messages.error.checkCert'), error);
+      toast.error(error.response?.data?.details || error.message || t('domain.messages.error.checkCert'));
     } finally {
       setCheckingDomains(prev => ({ ...prev, [domainId]: false }));
     }

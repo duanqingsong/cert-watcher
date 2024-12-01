@@ -52,7 +52,7 @@ const LoginForm = (props) => {
         let err = result.error;
         if (err) {
           console.error(err);
-          err = decodeURIComponent(err) || '稍后重试';
+          err = decodeURIComponent(err) || t('common.tryAgainLater');
           setError(origin => ({ ...origin, callbackError: err }));
         }
       }
@@ -88,7 +88,7 @@ const LoginForm = (props) => {
       </Button>
       {(error?.callbackError || error?.message)&&<Alert variant="destructive">
         <ExclamationTriangleIcon className="h-4 w-4" />
-        <AlertTitle>错误</AlertTitle>
+        <AlertTitle>{t('common.error')}</AlertTitle>
         <AlertDescription>
           {error?.callbackError || error?.message || ''}
         </AlertDescription>

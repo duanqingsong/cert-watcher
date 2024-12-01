@@ -14,7 +14,7 @@ export default function LoginPage(props) {
       <ModeToggle />
       <LanguageSwitch />
     </div>
-    <div className="flex flex-col items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex flex-col items-center  min-h-screen py-20 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <h1 className="text-2xl font-bold">{t('title')}</h1>
