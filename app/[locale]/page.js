@@ -17,6 +17,7 @@ import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,
 } from "@/components/ui/table"
 import { EditActions } from '@/components/EditActions';
 import { LanguageSwitch } from '@/components/LanguageSwitch'
+import { useTranslation } from 'react-i18next'
 
 function getExpiryColor(expiryDate) {
   if (!expiryDate) return '';
@@ -31,6 +32,7 @@ function getExpiryColor(expiryDate) {
 }
 
 export default function Home() {
+  const { t } = useTranslation();
   const [domains, setDomains] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -40,7 +42,6 @@ export default function Home() {
   const [editingDomain, setEditingDomain] = useState(null);
   const [checkingDomains, setCheckingDomains] = useState({});
   const router = useRouter();
-  // const { toggleTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     fetchDomains();
@@ -50,22 +51,20 @@ export default function Home() {
   const fetchDomains = async () => {
     try {
       setIsRefreshing(true);
-      const result=await getAllDomain();
-      console.log("getAllDomain result==>",result)
-      if (result.success==1) {
+      const result = await getAllDomain();
+      if (result.success == 1) {
         setDomains(result.data);
-      }else{
-        toast.error(result.message);
+      } else {
+        toast.error(t('domain.messages.error.fetch'));
       }
     } catch (error) {
-      console.error('获取域名列表失败:', error);
-      if (error.response && error.response.status === 401) {
-        // 如果是未授权错误，重定向到登录页面
+      console.error(t('domain.messages.error.fetch'), error);
+      if (error.response?.status === 401) {
         router.push('/login');
       } else {
-        toast.error('获取域名列表失败');
+        toast.error(t('domain.messages.error.fetch'));
       }
-    }finally{
+    } finally {
       setIsRefreshing(false);
     }
   };
@@ -75,18 +74,17 @@ export default function Home() {
   // 保存域名
   const handleSaveDomain = async (domainData) => {
     try {
-      const result=await saveDomain({...domainData,id:editingDomain?.id||''});
-      if(result.success){
-        toast.success('域名已保存');
+      const result = await saveDomain({...domainData, id: editingDomain?.id || ''});
+      if(result.success) {
+        toast.success(t('domain.messages.saved'));
       }
       await fetchDomains();
       closeDrawer();
       setEditingDomain(null);
       return { success: true };
     } catch (error) {
-      console.error('保存域名失败:', error);
-      toast.error(error.response?.data?.error || '保存域名失败');
-      return { success: false, error: error.response?.data?.error || '保存域名失败' };
+      toast.error(t('domain.messages.error.save'));
+      return { success: false, error: t('domain.messages.error.save') };
     }
   };
   // 刷新域名列表
@@ -95,9 +93,9 @@ export default function Home() {
     setIsRefreshing(true);
     try {
       await fetchDomains();
-      toast.success('域名列表已刷新');
+      toast.success(t('domain.messages.refreshed'));
     } catch (error) {
-      console.error('刷新域名列表失败:', error);
+      //console.error('刷新域名列表失败:', error);
       toast.error('刷新域名列表失败');
     } finally {
       setIsRefreshing(false);
@@ -116,7 +114,7 @@ export default function Home() {
         toast.error(result.message);
       }
     } catch (error) {
-      console.error('检查所有证书失败:', error);
+      //console.error('检查所有证书失败:', error);
       toast.error('检查所有证书失败');
     } finally {
       setIsCheckingAll(false);
@@ -140,7 +138,7 @@ export default function Home() {
       }
       
     } catch (error) {
-      console.error('删除域名失败:', error);
+      //console.error('删除域名失败:', error);
       toast.error('删除域名失败');
     } finally {
       setDeleteConfirmOpen(false);
@@ -186,21 +184,21 @@ export default function Home() {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold text-primary">HTTPS 证书监控</h1>
+        <h1 className="text-2xl font-bold text-primary">{t('domain.title')}</h1>
         <div className="flex space-x-2">
           {/* 切换语言 */}
           <LanguageSwitch />
           {/* 切换主题 */}
           <ModeToggle />
           <Button onClick={handleLogout} variant="outline">
-            登出
+            {t('domain.logout')}
           </Button>
         </div>
       </div>
       <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md mb-4">
         <div className="flex space-x-2">
           <Button onClick={openDrawer} className="bg-primary text-primary-foreground hover:bg-primary/90">
-            <Plus className="mr-2 h-4 w-4" /> 添加新域名
+            <Plus className="mr-2 h-4 w-4" /> {t('domain.addNew')}
           </Button>
           <Button 
             onClick={handleRefresh} 
@@ -209,7 +207,7 @@ export default function Home() {
             className="transition-colors duration-300"
           >
             <RotateCw className={`mr-2 h-4 w-4 transition-transform duration-300 ${isRefreshing ? 'animate-spin' : ''}`} />
-            刷新列表
+            {t('domain.refreshList')}
           </Button>
           <Button 
             variant="secondary" 
@@ -218,7 +216,7 @@ export default function Home() {
             className="transition-colors duration-300"
           >
             <RefreshCw className={`mr-2 h-4 w-4 ${isCheckingAll ? 'animate-spin' : ''}`} />
-            检查所有证书
+            {t('domain.checkAll')}
           </Button>
         </div>
       </div>
@@ -228,14 +226,14 @@ export default function Home() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-black dark:text-white" >网站名称</TableHead>
-              <TableHead className="text-black dark:text-white">域名</TableHead>
-              <TableHead className="text-black dark:text-white">证书颁发机构</TableHead>
-              <TableHead className="text-black dark:text-white">到期时间</TableHead>
-              <TableHead className="text-black dark:text-white">剩余时间</TableHead>
-              <TableHead className="text-black dark:text-white">最后检查</TableHead>
+              <TableHead className="text-black dark:text-white" >{t('domain.table.name')}</TableHead>
+              <TableHead className="text-black dark:text-white">{t('domain.table.domain')}</TableHead>
+              <TableHead className="text-black dark:text-white">{t('domain.table.issuer')}</TableHead>
+              <TableHead className="text-black dark:text-white">{t('domain.table.expiryDate')}</TableHead>
+              <TableHead className="text-black dark:text-white">{t('domain.table.remainingTime')}</TableHead>
+              <TableHead className="text-black dark:text-white">{t('domain.table.lastCheck')}</TableHead>
               <TableHead className="text-black dark:text-white flex justify-center">
-                操作
+                {t('domain.table.actions')}
               </TableHead>
             </TableRow>
           </TableHeader>

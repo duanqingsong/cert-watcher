@@ -11,5 +11,51 @@
     "home": "首页",
     "dashboard": "控制台",
     "settings": "设置"
+  },
+  "domain": {
+    "title": "HTTPS 证书监控",
+    "logout": "登出",
+    "addNew": "添加新域名",
+    "editDomain": "编辑域名",
+    "refreshList": "刷新列表",
+    "checkAll": "检查所有证书",
+    "edit": "修改",
+    "delete": "删除",
+    "save": "保存",
+    "cancel": "取消",
+    "confirm": "确认",
+    "note": "备注",
+    "validation": {
+      "invalidDomain": "请输入有效的域名格式",
+      "nameRequired": "网站名称不能为空"
+    },
+    "deleteConfirm": {
+      "title": "确认删除",
+      "message": "您确定要删除域名 {domain} 吗？此操作无法撤销。"
+    },
+    "table": {
+      "name": "网站名称",
+      "domain": "域名",
+      "issuer": "证书颁发机构",
+      "expiryDate": "到期时间",
+      "remainingTime": "剩余时间",
+      "lastCheck": "最后检查",
+      "actions": "操作"
+    },
+    "messages": {
+      "saved": "域名已保存",
+      "refreshed": "域名列表已刷新",
+      "allChecked": "所有证书检查完成",
+      "deleted": "域名已删除",
+      "certUpdated": "证书状态已更新",
+      "error": {
+        "fetch": "获取域名列表失败",
+        "save": "保存域名失败",
+        "refresh": "刷新域名列表失败",
+        "checkAll": "检查所有证书失败",
+        "delete": "删除域名失败",
+        "checkCert": "检查证书状态失败"
+      }
+    }
   }
 } 

@@ -1,15 +1,18 @@
+"use client"
 import { useState, useEffect } from 'react';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from "@/components/ui/drawer";
+import { useTranslation } from 'react-i18next'
+import { DrawerFooter } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import MyDrawer from './MyDrawer';
 import MySheet from './MySheet';
-// 域名验证正则表达式
+
 const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
 
 export default function DomainEditor({ isOpen, onClose, onSave, domain }) {
+  const { t } = useTranslation();
+  
   const [domainName, setDomainName] = useState('');
   const [name, setName] = useState('');
   const [note, setNote] = useState('');
@@ -74,13 +77,13 @@ export default function DomainEditor({ isOpen, onClose, onSave, domain }) {
 
   return (
     <MySheet 
-      title={domain ? '编辑域名' : '添加新域名'} 
+      title={domain ? t('domain.editDomain') : t('domain.addNew')} 
       isOpen={isOpen} 
       onClose={onClose}
       >
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
           <div>
-            <Label htmlFor="domain">域名</Label>
+            <Label htmlFor="domain">{t('domain.table.domain')}</Label>
             <Input
               id="domain"
               value={domainName}
@@ -88,10 +91,10 @@ export default function DomainEditor({ isOpen, onClose, onSave, domain }) {
               onBlur={() => validateDomain(domainName)}
               required
             />
-            {domainError && <p className="text-red-500 text-sm">{domainError}</p>}
+            {domainError && <p className="text-red-500 text-sm">{t('domain.validation.invalidDomain')}</p>}
           </div>
           <div>
-            <Label htmlFor="name">网站名称</Label>
+            <Label htmlFor="name">{t('domain.table.name')}</Label>
             <Input
               id="name"
               value={name}
@@ -99,10 +102,10 @@ export default function DomainEditor({ isOpen, onClose, onSave, domain }) {
               onBlur={() => validateName(name)}
               required
             />
-            {nameError && <p className="text-red-500 text-sm">{nameError}</p>}
+            {nameError && <p className="text-red-500 text-sm">{t('domain.validation.nameRequired')}</p>}
           </div>
           <div>
-            <Label htmlFor="note">备注</Label>
+            <Label htmlFor="note">{t('note')}</Label>
             <Textarea
               id="note"
               value={note}
@@ -110,7 +113,7 @@ export default function DomainEditor({ isOpen, onClose, onSave, domain }) {
             />
           </div>
           <DrawerFooter>
-            <Button type="submit" disabled={!isFormValid}>保存</Button>
+            <Button type="submit" disabled={!isFormValid}>{t('domain.save')}</Button>
           </DrawerFooter>
         </form>
     </MySheet>

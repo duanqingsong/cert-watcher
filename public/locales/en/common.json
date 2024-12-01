@@ -11,5 +11,51 @@
     "home": "Home",
     "dashboard": "Dashboard",
     "settings": "Settings"
+  },
+  "domain": {
+    "title": "HTTPS Certificate Monitor",
+    "logout": "Logout",
+    "addNew": "Add New Domain",
+    "editDomain": "Edit Domain",
+    "refreshList": "Refresh List",
+    "checkAll": "Check All Certificates",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "note": "Note",
+    "validation": {
+      "invalidDomain": "Please enter a valid domain format",
+      "nameRequired": "Website name is required"
+    },
+    "deleteConfirm": {
+      "title": "Confirm Delete",
+      "message": "Are you sure you want to delete domain {domain}? This action cannot be undone."
+    },
+    "table": {
+      "name": "Website Name",
+      "domain": "Domain",
+      "issuer": "Certificate Issuer",
+      "expiryDate": "Expiry Date",
+      "remainingTime": "Remaining Time",
+      "lastCheck": "Last Check",
+      "actions": "Actions"
+    },
+    "messages": {
+      "saved": "Domain saved",
+      "refreshed": "Domain list refreshed",
+      "allChecked": "All certificates checked",
+      "deleted": "Domain deleted",
+      "certUpdated": "Certificate status updated",
+      "error": {
+        "fetch": "Failed to fetch domain list",
+        "save": "Failed to save domain",
+        "refresh": "Failed to refresh domain list",
+        "checkAll": "Failed to check all certificates",
+        "delete": "Failed to delete domain",
+        "checkCert": "Failed to check certificate status"
+      }
+    }
   }
 } 
