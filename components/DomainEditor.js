@@ -105,7 +105,7 @@ export default function DomainEditor({ isOpen, onClose, onSave, domain }) {
             {nameError && <p className="text-red-500 text-sm">{t('domain.validation.nameRequired')}</p>}
           </div>
           <div>
-            <Label htmlFor="note">{t('note')}</Label>
+            <Label htmlFor="note">{t('domain.note')}</Label>
             <Textarea
               id="note"
               value={note}

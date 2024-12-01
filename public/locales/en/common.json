@@ -14,7 +14,7 @@
   },
   "domain": {
     "title": "HTTPS Certificate Monitor",
-    "logout": "Logout",
+    "logout": "Sign out",
     "addNew": "Add New Domain",
     "editDomain": "Edit Domain",
     "refreshList": "Refresh List",
@@ -56,6 +56,13 @@
         "delete": "Failed to delete domain",
         "checkCert": "Failed to check certificate status"
       }
+    },
+    "search": "Search domains or notes...",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {{page}}",
+      "of": "of {{total}}"
     }
   },
   "error": "Error",

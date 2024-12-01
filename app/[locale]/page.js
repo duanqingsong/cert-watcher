@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Plus, RotateCw, RefreshCw, CheckCircle } from 'lucide-react';
+import { Plus, RotateCw, RefreshCw, CheckCircle, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import DomainEditor from '@/components/DomainEditor';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import { toast } from 'react-hot-toast';
@@ -15,6 +15,8 @@ import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from "@/compon
 import { EditActions } from '@/components/EditActions';
 import { LanguageSwitch } from '@/components/LanguageSwitch'
 import { useTranslation } from 'react-i18next'
+import { Input } from "@/components/ui/input";
+import { CustomPagination } from "@/components/CustomPagination"
 
 function getExpiryColor(expiryDate) {
   if (!expiryDate) return '';
@@ -39,6 +41,9 @@ export default function Home() {
   const [editingDomain, setEditingDomain] = useState(null);
   const [checkingDomains, setCheckingDomains] = useState({});
   const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // 每页显示的数量
 
   useEffect(() => {
     fetchDomains();
@@ -173,6 +178,17 @@ export default function Home() {
     }
   };
 
+  const filteredDomains = domains.filter(domain => 
+    domain.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    domain.domain.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredDomains.length / itemsPerPage);
+  const paginatedDomains = filteredDomains.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
@@ -188,28 +204,40 @@ export default function Home() {
         </div>
       </div>
       <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md mb-4">
-        <div className="flex space-x-2">
-          <Button onClick={openDrawer} className="bg-primary text-primary-foreground hover:bg-primary/90">
-            <Plus className="mr-2 h-4 w-4" /> {t('domain.addNew')}
-          </Button>
-          <Button 
-            onClick={handleRefresh} 
-            disabled={isRefreshing} 
-            variant="secondary"
-            className="transition-colors duration-300"
-          >
-            <RotateCw className={`mr-2 h-4 w-4 transition-transform duration-300 ${isRefreshing ? 'animate-spin' : ''}`} />
-            {t('domain.refreshList')}
-          </Button>
-          <Button 
-            variant="secondary" 
-            onClick={handleCheckAll}
-            disabled={isCheckingAll}
-            className="transition-colors duration-300"
-          >
-            <RefreshCw className={`mr-2 h-4 w-4 ${isCheckingAll ? 'animate-spin' : ''}`} />
-            {t('domain.checkAll')}
-          </Button>
+        <div className="flex justify-between items-center">
+          <div className="relative w-72">
+            <Input
+              type="text"
+              placeholder={t('domain.search')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+          </div>
+          <div className="flex space-x-2">
+            <Button onClick={openDrawer} className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Plus className="mr-2 h-4 w-4" /> {t('domain.addNew')}
+            </Button>
+            <Button 
+              onClick={handleRefresh} 
+              disabled={isRefreshing} 
+              variant="secondary"
+              className="transition-colors duration-300"
+            >
+              <RotateCw className={`mr-2 h-4 w-4 transition-transform duration-300 ${isRefreshing ? 'animate-spin' : ''}`} />
+              {t('domain.refreshList')}
+            </Button>
+            <Button 
+              variant="secondary" 
+              onClick={handleCheckAll}
+              disabled={isCheckingAll}
+              className="transition-colors duration-300"
+            >
+              <RefreshCw className={`mr-2 h-4 w-4 ${isCheckingAll ? 'animate-spin' : ''}`} />
+              {t('domain.checkAll')}
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -230,7 +258,7 @@ export default function Home() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {domains&&domains.length>0&&domains.map((domain) => (
+            {paginatedDomains.map((domain) => (
               <TableRow key={domain.id} className="border-b">
                 <TableCell>{domain.name}</TableCell>
                 <TableCell>{domain.domain}</TableCell>
@@ -265,6 +293,12 @@ export default function Home() {
           </TableBody>
         </Table>
       </div>
+
+      <CustomPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
 
       <DomainEditor
         isOpen={isDrawerOpen}

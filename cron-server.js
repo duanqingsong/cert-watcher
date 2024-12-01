@@ -16,7 +16,7 @@ const cronSchedule = process.env.CRON_SCHEDULE || '';
 console.log('cron:', cronSchedule);
 if(!cronSchedule){
   console.error('未配置 CRON_SCHEDULE');
-  return;
+  process.exit(1);
 }
 
 // 设置 cron 作业

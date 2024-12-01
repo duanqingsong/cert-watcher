@@ -8,7 +8,7 @@
 - 支持添加、编辑和删除域名
 - 定时任务自动检查所有域名证书
 
-# 启动方式
+# 管理系统 启动方式
 
 ## 开发模式
 ```bash
@@ -27,6 +27,9 @@ yarn build
 yarn start
 ```
 
+# cron server启动方式
 
-
+```js
+node cron-server.js    --env=production
+```
 
