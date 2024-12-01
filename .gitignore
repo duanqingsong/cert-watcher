@@ -115,3 +115,7 @@ temp/
 
 # ... 其他忽略项
 domains.sqlite
+
+# SQLite database
+*.sqlite
+*.sqlite-*

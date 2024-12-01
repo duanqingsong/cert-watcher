@@ -74,5 +74,78 @@
     "hoursAgo": "{{hours}} hours ago",
     "daysAgo": "{{days}} days ago",
     "countdown": "{{days}} days {{hours}} hours {{minutes}} minutes"
+  },
+  "register": {
+    "title": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "loading": "Registering...",
+    "submit": "Register",
+    "haveAccount": "Have an account? Login",
+    "error": {
+      "passwordMismatch": "Passwords do not match",
+      "emailExists": "Email is already registered",
+      "default": "Registration failed, please try again later"
+    }
+  },
+  "login": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "loading": "Logging in...",
+    "submit": "Login",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Create Account",
+    "error": {
+      "invalidCredentials": "Invalid email or password",
+      "unverified": "Please verify your email first",
+      "default": "Login failed, please try again later"
+    },
+    "verifyEmailSent": "Please check your email for verification"
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "email": "Email Address",
+    "submitting": "Submitting...",
+    "submit": "Submit",
+    "returnToLogin": "Return to Login",
+    "success": "If this email is registered, you will receive a password reset email. Please check your inbox.",
+    "error": {
+      "default": "Operation failed, please try again later"
+    }
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "loading": "Resetting...",
+    "submit": "Reset Password",
+    "invalidLink": "Invalid reset link",
+    "success": "Password reset successful, please login",
+    "error": {
+      "passwordMismatch": "Passwords do not match",
+      "invalidToken": "Password reset link has expired or is invalid",
+      "default": "Reset failed, please try again later"
+    }
+  },
+  "verifyEmail": {
+    "title": "Email Verification",
+    "verifying": "Verifying your email...",
+    "success": "Email verification successful!",
+    "error": "Verification link has expired or is invalid",
+    "goToLogin": "Go to Login",
+    "returnToLogin": "Return to Login"
+  },
+  "profile": {
+    "title": "Profile",
+    "email": "Email",
+    "nickname": "Nickname",
+    "updating": "Updating...",
+    "update": "Update Profile",
+    "success": "Update successful",
+    "error": {
+      "default": "Update failed, please try again later"
+    }
   }
 } 

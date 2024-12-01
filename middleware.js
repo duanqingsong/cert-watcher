@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server'
 import acceptLanguage from 'accept-language'
+import { verify } from 'jsonwebtoken'
 
 acceptLanguage.languages(['en', 'zh'])
+
+const protectedPaths = [
+  '/dashboard',
+  '/profile',
+  // 添加其他需要保护的路径
+]
 
 export const config = {
   matcher: [
@@ -33,5 +40,25 @@ export function middleware(request) {
     const newUrl = new URL(`/${locale}${pathname === '/' ? '' : pathname}`, request.url)
     return NextResponse.redirect(newUrl)
   }
+
+  // 检查是否是受保护的路径
+  if (protectedPaths.some(prefix => pathname.startsWith(prefix))) {
+    const token = request.cookies.get('auth_token')?.value
+
+    if (!token) {
+      return NextResponse.redirect(new URL(`/${locale}/login`, request.url))
+    }
+
+    try {
+      // 验证 token
+      verify(token, process.env.JWT_SECRET)
+      return NextResponse.next()
+    } catch (error) {
+      // token 无效或过期
+      return NextResponse.redirect(new URL(`/${locale}/login`, request.url))
+    }
+  }
+
+  return NextResponse.next()
 }
 

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert"
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
 import { useTranslation } from 'react-i18next'
+import Link from 'next/link'
 
 const LoginForm = (props) => {
   const { searchParams,params } = props;
@@ -85,6 +86,20 @@ const LoginForm = (props) => {
         placeholder={t('login.password')}
         onChange={handleChange}
       />
+      <Link
+        href="/forgot-password"
+        className="text-sm text-blue-500 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+      >
+        忘记密码？
+      </Link>
+
+      <Link
+        href="/register"
+        className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+      >
+        注册账号
+      </Link>
+
       <Button
         type="submit"
         className="text-base w-full py-6 mt-3 mb-3"

@@ -178,7 +178,7 @@ export default function Home() {
     }
   };
 
-  const filteredDomains = domains.filter(domain => 
+  const filteredDomains = domains?.filter(domain => 
     domain.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     domain.domain.toLowerCase().includes(searchQuery.toLowerCase())
   );

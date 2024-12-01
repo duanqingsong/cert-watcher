@@ -74,5 +74,78 @@
     "hoursAgo": "{{hours}}小时前",
     "daysAgo": "{{days}}天前",
     "countdown": "{{days}}天 {{hours}}小时 {{minutes}}分钟"
+  },
+  "register": {
+    "title": "注册",
+    "email": "邮箱",
+    "password": "密码",
+    "confirmPassword": "确认密码",
+    "loading": "注册中...",
+    "submit": "注册",
+    "haveAccount": "已有账号？登录",
+    "error": {
+      "passwordMismatch": "两次输入的密码不匹配",
+      "emailExists": "该邮箱已被注册",
+      "default": "注册失败，请稍后重试"
+    }
+  },
+  "login": {
+    "title": "登录",
+    "email": "邮箱",
+    "password": "密码",
+    "loading": "登录中...",
+    "submit": "登录",
+    "forgotPassword": "忘记密码？",
+    "noAccount": "注册账号",
+    "error": {
+      "invalidCredentials": "邮箱或密码错误",
+      "unverified": "请先验证您的邮箱",
+      "default": "登录失败，请稍后重试"
+    },
+    "verifyEmailSent": "请查收验证邮件"
+  },
+  "forgotPassword": {
+    "title": "找回密码",
+    "email": "邮箱地址",
+    "submitting": "提交中...",
+    "submit": "提交",
+    "returnToLogin": "返回登录",
+    "success": "如果该邮箱已注册，您将收到密码重置邮件。请检查您的邮箱。",
+    "error": {
+      "default": "操作失败，请稍后重试"
+    }
+  },
+  "resetPassword": {
+    "title": "重置密码",
+    "newPassword": "新密码",
+    "confirmNewPassword": "确认新密码",
+    "loading": "重置中...",
+    "submit": "重置密码",
+    "invalidLink": "无效的重置链接",
+    "success": "密码重置成功，请登录",
+    "error": {
+      "passwordMismatch": "两次输入的密码不匹配",
+      "invalidToken": "密码重置链接已过期或无效",
+      "default": "重置失败，请稍后重试"
+    }
+  },
+  "verifyEmail": {
+    "title": "邮箱验证",
+    "verifying": "正在验证您的邮箱...",
+    "success": "邮箱验证成功！",
+    "error": "验证链接已过期或无效",
+    "goToLogin": "前往登录",
+    "returnToLogin": "返回登录"
+  },
+  "profile": {
+    "title": "个人信息",
+    "email": "邮箱",
+    "nickname": "昵称",
+    "updating": "更新中...",
+    "update": "更新信息",
+    "success": "更新成功",
+    "error": {
+      "default": "更新失败，请稍后重试"
+    }
   }
 } 

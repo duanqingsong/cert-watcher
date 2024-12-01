@@ -33,3 +33,32 @@ yarn start
 node cron-server.js    --env=production
 ```
 
++ ## 环境变量配置
++ 
++ 创建 `.env.local` 文件并配置以下环境变量：
++ 
++ ```plaintext
++ # MongoDB 配置
++ MONGODB_URI=mongodb://localhost:27017/your_database
++ 
++ # JWT 配置
++ JWT_SECRET=your_jwt_secret_key
++ 
++ # 邮件服务配置
++ SMTP_HOST=smtp.example.com
++ SMTP_PORT=587
++ SMTP_USER=your_email@example.com
++ SMTP_PASSWORD=your_email_password
++ SMTP_FROM=your_email@example.com
++ 
++ # 应用配置
++ NEXT_PUBLIC_APP_URL=http://localhost:3000
++ ```
++ 
++ ### 环境变量说明
++ 
++ - `MONGODB_URI`: MongoDB 数据库连接地址
++ - `JWT_SECRET`: JWT 令牌加密密钥
++ - `SMTP_*`: 邮件服务器配置
++ - `NEXT_PUBLIC_APP_URL`: 应用访问地址
+
