@@ -216,9 +216,7 @@ export default function Home() {
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
           </div>
           <div className="flex space-x-2">
-            <Button onClick={openDrawer} className="bg-primary text-primary-foreground hover:bg-primary/90">
-              <Plus className="mr-2 h-4 w-4" /> {t('domain.addNew')}
-            </Button>
+            
             <Button 
               onClick={handleRefresh} 
               disabled={isRefreshing} 
@@ -236,6 +234,9 @@ export default function Home() {
             >
               <RefreshCw className={`mr-2 h-4 w-4 ${isCheckingAll ? 'animate-spin' : ''}`} />
               {t('domain.checkAll')}
+            </Button>
+            <Button onClick={openDrawer} className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Plus className="mr-2 h-4 w-4" /> {t('domain.addNew')}
             </Button>
           </div>
         </div>

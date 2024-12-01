@@ -57,7 +57,7 @@
         "checkCert": "Failed to check certificate status"
       }
     },
-    "search": "Search domains or notes...",
+    "search": "Search website name or domains...",
     "pagination": {
       "previous": "Previous",
       "next": "Next",

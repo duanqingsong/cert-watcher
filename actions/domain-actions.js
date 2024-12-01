@@ -116,7 +116,7 @@ export async function checkDomainById(id) {
       certInfo = await checkCertificate(domain.domain);
       //certInfo=> { expiryDate: '2025-01-07T00:27:52.000Z', issuer: "Let's Encrypt" }
     } catch (error) {
-      console.error('证书检查失败:', error);
+      console.error(`${domain.domain}证书检查失败:`, error);
       certError = error.message;
       return { success: 0, message: certError };
     }
