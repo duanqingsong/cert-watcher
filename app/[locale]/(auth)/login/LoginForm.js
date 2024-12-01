@@ -61,7 +61,13 @@ const LoginForm = (props) => {
     }
   }
 
-  return (
+  return (<>
+  <div className="text-center">
+          <h1 className="text-2xl font-bold">{t('title')}</h1>
+          <h2 className="mt-6 text-3xl font-bold tracking-tight">
+            {t('login.title')}
+          </h2>
+        </div>
     <form onSubmit={handleSubmit}>
       <Input
         className="p-3 placeholder-opacity-0 mb-3 sm:placeholder-opacity-100"
@@ -94,6 +100,7 @@ const LoginForm = (props) => {
         </AlertDescription>
       </Alert>}
     </form>
+    </>
   );
 }
 
