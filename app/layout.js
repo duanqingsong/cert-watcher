@@ -21,7 +21,11 @@ export default function RootLayout({ children }) {
       <body
         className={`antialiased`}
       >
-        <ThemeProvider>
+        <ThemeProvider 
+          attribute="class" 
+          defaultTheme="dark" 
+          enableSystem
+          disableTransitionOnChange>
           <AuthProvider>
             {children}
           </AuthProvider>

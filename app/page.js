@@ -1,18 +1,31 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Button } from "@/components/ui/button";
 import { Plus, RotateCw, RefreshCw, Edit, CheckCircle, Trash2 } from 'lucide-react';
-import DomainDrawer from '@/components/DomainDrawer';
+import DomainEditor from '@/components/DomainEditor';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import { toast } from 'react-hot-toast';
 import { formatDate, formatCountdown, formatRelativeTime } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { signOut } from "next-auth/react"
 import { checkAllDomain, checkDomainById, deleteDomain, getAllDomain, saveDomain } from '@/actions/domain-actions';
+import { ModeToggle } from '@/components/ModeToggle';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { EditActions } from '@/components/EditActions';
+
 
 function getExpiryColor(expiryDate) {
-  if (!expiryDate) return 'text-gray-500';
+  if (!expiryDate) return '';
   
   const now = new Date();
   const expiry = new Date(expiryDate);
@@ -20,7 +33,7 @@ function getExpiryColor(expiryDate) {
 
   if (daysUntilExpiry <= 0) return 'text-red-600';
   if (daysUntilExpiry <= 3) return 'text-yellow-600';
-  return 'text-gray-900';
+  return '';
 }
 
 export default function Home() {
@@ -33,6 +46,7 @@ export default function Home() {
   const [editingDomain, setEditingDomain] = useState(null);
   const [checkingDomains, setCheckingDomains] = useState({});
   const router = useRouter();
+  // const { toggleTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     fetchDomains();
@@ -142,7 +156,7 @@ export default function Home() {
   const handleEdit = (domain) => {
     // 这里可以打开编辑抽屉或导航到编辑页面
     setIsDrawerOpen(true);
-    // 假设您的 DomainDrawer 组件接受一个 domain 属性来预填表单
+    // 假设您的 DomainEditor 组件接受一个 domain 属性来预填表单
     setEditingDomain(domain);
   };
   // 检查证书
@@ -178,11 +192,16 @@ export default function Home() {
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold text-primary">HTTPS 证书监控</h1>
-        <Button onClick={handleLogout} variant="outline">
-          登出
-        </Button>
+        <div className="flex space-x-2">
+          <Button onClick={handleLogout} variant="outline">
+            登出
+          </Button>
+          {/* 切换主题 */}
+          <ModeToggle />
+          
+        </div>
       </div>
-      <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
+      <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md mb-4">
         <div className="flex space-x-2">
           <Button onClick={openDrawer} className="bg-primary text-primary-foreground hover:bg-primary/90">
             <Plus className="mr-2 h-4 w-4" /> 添加新域名
@@ -209,42 +228,36 @@ export default function Home() {
       </div>
 
       {/* 域名列表 */}
-      <div className="overflow-x-auto bg-white rounded-lg shadow-md">
-        <table className="min-w-full">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2">网站名称</th>
-              <th className="px-4 py-2">域名</th>
-              <th className="px-4 py-2">证书颁发机构</th>
-              <th className="px-4 py-2">到期时间</th>
-              <th className="px-4 py-2">剩余时间</th>
-              <th className="px-4 py-2">最后检查</th>
-              <th className="px-4 py-2">操作</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className=" bg-white border border-gray-200 dark:border-gray-700 dark:bg-gray-700 p-3 rounded-lg shadow-md">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-black dark:text-white" >网站名称</TableHead>
+              <TableHead className="text-black dark:text-white">域名</TableHead>
+              <TableHead className="text-black dark:text-white">证书颁发机构</TableHead>
+              <TableHead className="text-black dark:text-white">到期时间</TableHead>
+              <TableHead className="text-black dark:text-white">剩余时间</TableHead>
+              <TableHead className="text-black dark:text-white">最后检查</TableHead>
+              <TableHead className="text-black dark:text-white flex justify-center">
+                操作
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {domains&&domains.length>0&&domains.map((domain) => (
-              <tr key={domain.id} className="border-b">
-                <td className="px-4 py-2">{domain.name}</td>
-                <td className="px-4 py-2">{domain.domain}</td>
-                <td className="px-4 py-2">{domain.issuer}</td>
-                <td className={`px-4 py-2 ${getExpiryColor(domain.expiryDate)}`}>
+              <TableRow key={domain.id} className="border-b">
+                <TableCell>{domain.name}</TableCell>
+                <TableCell>{domain.domain}</TableCell>
+                <TableCell>{domain.issuer}</TableCell>
+                <TableCell className={` ${getExpiryColor(domain.expiryDate)}`}>
                   {formatDate(domain.expiryDate)}
-                </td>
-                <td className={`px-4 py-2 ${getExpiryColor(domain.expiryDate)}`}>
+                </TableCell>
+                <TableCell className={` ${getExpiryColor(domain.expiryDate)}`}>
                   {formatCountdown(domain.expiryDate)}
-                </td>
-                <td className="px-4 py-2">{formatRelativeTime(domain.lastChecked)}</td>
-                <td className="px-4 py-2">
-                  <div className="flex space-x-2">
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      onClick={() => handleEdit(domain)}
-                      title="修改"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
+                </TableCell>
+                <TableCell>{formatRelativeTime(domain.lastChecked)}</TableCell>
+                <TableCell className="w-fit">
+                  <div className="flex justify-end space-x-2">
                     <Button 
                       variant="outline" 
                       size="icon" 
@@ -254,23 +267,20 @@ export default function Home() {
                     >
                       <CheckCircle className={`h-4 w-4 ${checkingDomains[domain.id] ? 'animate-spin' : ''}`} />
                     </Button>
-                    <Button 
-                      variant="destructive" 
-                      size="icon" 
-                      onClick={() => handleDelete(domain)}
-                      title="删除"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    
+                    <EditActions 
+                      onEdit={() => handleEdit(domain)} 
+                      onDelete={() => handleDelete(domain)} 
+                    />
                   </div>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
 
-      <DomainDrawer
+      <DomainEditor
         isOpen={isDrawerOpen}
         onClose={() => {
           closeDrawer();

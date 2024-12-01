@@ -4,11 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-
+import MyDrawer from './MyDrawer';
+import MySheet from './MySheet';
 // 域名验证正则表达式
 const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
 
-export default function DomainDrawer({ isOpen, onClose, onSave, domain }) {
+export default function DomainEditor({ isOpen, onClose, onSave, domain }) {
   const [domainName, setDomainName] = useState('');
   const [name, setName] = useState('');
   const [note, setNote] = useState('');
@@ -72,11 +73,11 @@ export default function DomainDrawer({ isOpen, onClose, onSave, domain }) {
   const isFormValid = !domainError && !nameError && domainName && name;
 
   return (
-    <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle>{domain ? '编辑域名' : '添加新域名'}</DrawerTitle>
-        </DrawerHeader>
+    <MySheet 
+      title={domain ? '编辑域名' : '添加新域名'} 
+      isOpen={isOpen} 
+      onClose={onClose}
+      >
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
           <div>
             <Label htmlFor="domain">域名</Label>
@@ -112,7 +113,6 @@ export default function DomainDrawer({ isOpen, onClose, onSave, domain }) {
             <Button type="submit" disabled={!isFormValid}>保存</Button>
           </DrawerFooter>
         </form>
-      </DrawerContent>
-    </Drawer>
+    </MySheet>
   );
 }
