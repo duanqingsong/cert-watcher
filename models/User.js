@@ -41,6 +41,8 @@ export class User {
     return this.findById(result.lastID);
   }
 
+
+  // 更新郵箱验证token
   static async updateVerificationToken(id, token, expires) {
     const db = await getDb();
     return db.run(

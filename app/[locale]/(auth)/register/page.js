@@ -1,12 +1,21 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useTranslation } from 'react-i18next';
-
+import { ModeToggle } from '@/components/ModeToggle';
+import { LanguageSwitch } from '@/components/LanguageSwitch';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import Link from 'next/link';
 export default function Register() {
   const { t } = useTranslation();
   const router = useRouter();
@@ -38,7 +47,8 @@ export default function Register() {
         throw new Error(data.error || '注册失败');
       }
 
-      router.push('/login?message=请查收验证邮件');
+      // 请查收验证邮件
+      router.push('/login?message=');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -46,9 +56,22 @@ export default function Register() {
     }
   };
 
-  return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
-      <h1 className="text-2xl font-bold mb-6">{t('register.title')}</h1>
+  return (<>
+   <div className="flex items-center gap-2 p-4">
+      <ModeToggle />
+      <LanguageSwitch />
+    </div>
+    
+    <Card className="max-w-md mx-auto mt-10 p-6 bg-white  dark:bg-gray-800">
+      <CardHeader>
+        <CardTitle>
+          {t('register.title')}
+        </CardTitle>
+        <CardDescription>
+          {t('register.description')}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
           {error}
@@ -62,6 +85,7 @@ export default function Register() {
           <Input
             id="email"
             type="email"
+            placeholder={t('register.email')}
             value={formData.email}
             onChange={(e) => setFormData({...formData, email: e.target.value})}
             required
@@ -74,6 +98,7 @@ export default function Register() {
           <Input
             id="password"
             type="password"
+            placeholder={t('register.password')}
             value={formData.password}
             onChange={(e) => setFormData({...formData, password: e.target.value})}
             required
@@ -95,6 +120,11 @@ export default function Register() {
           {loading ? t('register.loading') : t('register.submit')}
         </Button>
       </form>
-    </div>
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <Link className="inline-block align-baseline text-sm text-blue-500 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300" href="/login">{t('register.haveAccount')}</Link>
+      </CardFooter>
+    </Card>
+    </>
   );
 } 

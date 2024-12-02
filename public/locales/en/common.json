@@ -1,12 +1,5 @@
 {
   "title": "HTTPS Certificate Monitor",
-  "login": {
-    "title": "Sign in",
-    "username": "User Name",
-    "password": "Password",
-    "submit": "Sign In",
-    "error": "Invalid user name or password"
-  },
   "nav": {
     "home": "Home",
     "dashboard": "Dashboard",
@@ -77,6 +70,7 @@
   },
   "register": {
     "title": "Register",
+    "description": "Create your account to manage your domains.",
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm Password",
@@ -91,6 +85,8 @@
   },
   "login": {
     "title": "Login",
+    "description": "Enter your email and password to login.",
+    
     "email": "Email",
     "password": "Password",
     "loading": "Logging in...",
@@ -108,6 +104,7 @@
     "title": "Forgot Password",
     "email": "Email Address",
     "submitting": "Submitting...",
+    "description": "Enter your email address to receive a password reset link.",
     "submit": "Submit",
     "returnToLogin": "Return to Login",
     "success": "If this email is registered, you will receive a password reset email. Please check your inbox.",

@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Plus, RotateCw, RefreshCw, CheckCircle, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, RotateCw, RefreshCw, CheckCircle, Search } from 'lucide-react';
 import DomainEditor from '@/components/DomainEditor';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import { toast } from 'react-hot-toast';
 import { formatDate, formatCountdown, formatRelativeTime } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { signOut } from "next-auth/react"
-import { checkAllDomain, checkDomainById, deleteDomain, getAllDomain, saveDomain } from '@/actions/domain-actions';
+import { checkMyDomains, checkDomainById, deleteDomain, saveDomain, getMyAllDomain } from '@/actions/domain-actions';
 import { ModeToggle } from '@/components/ModeToggle';
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from "@/components/ui/table"
 import { EditActions } from '@/components/EditActions';
@@ -53,7 +53,7 @@ export default function Home() {
   const fetchDomains = async () => {
     try {
       setIsRefreshing(true);
-      const result = await getAllDomain();
+      const result = await getMyAllDomain();
       if (result.success == 1) {
         setDomains(result.data);
       } else {
@@ -107,7 +107,7 @@ export default function Home() {
     if (isCheckingAll) return;
     setIsCheckingAll(true);
     try {
-      const result = await checkAllDomain();
+      const result = await checkMyDomains();
       if (result.success) {
         toast.success(t('domain.messages.allChecked'));
         await fetchDomains();
@@ -178,7 +178,7 @@ export default function Home() {
     }
   };
 
-  const filteredDomains = domains?.filter(domain => 
+  const filteredDomains =!domains?[]:domains?.filter(domain => 
     domain.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     domain.domain.toLowerCase().includes(searchQuery.toLowerCase())
   );

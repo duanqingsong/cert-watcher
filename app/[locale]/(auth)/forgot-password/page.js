@@ -5,7 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useTranslation } from 'react-i18next';
-
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { ModeToggle } from '@/components/ModeToggle';
+import { LanguageSwitch } from '@/components/LanguageSwitch';
 export default function ForgotPassword() {
   const { t } = useTranslation();
   const [email, setEmail] = useState('');
@@ -39,9 +48,22 @@ export default function ForgotPassword() {
     }
   };
 
-  return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
-      <h1 className="text-2xl font-bold mb-6">{t('forgotPassword.title')}</h1>
+  return (<>
+    <div className="flex items-center gap-2 p-4">
+      <ModeToggle />
+      <LanguageSwitch />
+    </div>
+    <Card className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+      <CardHeader>
+        <CardTitle>
+        <h1 className="text-2xl font-bold mb-6">{t('forgotPassword.title')}</h1>
+        </CardTitle>
+        <CardDescription>
+          {t('forgotPassword.description')}
+        </CardDescription>
+      </CardHeader>
+      
+      <CardContent>
       {status === 'success' ? (
         <div>
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
@@ -68,6 +90,7 @@ export default function ForgotPassword() {
             <Input
               id="email"
               type="email"
+              // placeholder={t('forgotPassword.email')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -78,6 +101,11 @@ export default function ForgotPassword() {
           </Button>
         </form>
       )}
-    </div>
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <Link className="inline-block align-baseline text-sm text-blue-500 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300" href="/login">{t('register.haveAccount')}</Link>
+      </CardFooter>
+    </Card>
+    </>
   );
 } 

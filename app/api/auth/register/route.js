@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { User } from '@/models/User';
 import crypto from 'crypto';
-import { sendVerificationEmail } from '@/lib/email';
+// import { sendVerificationEmail } from '@/lib/email';
 
 export async function POST(request) {
   try {
@@ -29,15 +29,16 @@ export async function POST(request) {
 
     // 生成验证token
     const verificationToken = crypto.randomBytes(32).toString('hex');
-    const verificationExpires = Date.now() + 24 * 60 * 60 * 1000; // 24小时后过期
+    // 24小时后过期
+    const verificationExpires = Date.now() + 24 * 60 * 60 * 1000; 
 
     await User.updateVerificationToken(user.id, verificationToken, verificationExpires);
 
     // 发送验证邮件
-    await sendVerificationEmail(email, verificationToken);
+    // await sendVerificationEmail(email, verificationToken);
 
     return NextResponse.json({
-      message: '注册成功，请查收验证邮件'
+      message: '注册成功!'
     });
   } catch (error) {
     console.error('注册错误:', error);

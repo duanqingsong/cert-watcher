@@ -10,6 +10,15 @@ async function getAllDomains() {
 }
 
 /**
+ * 获取用戶的所有域名
+ * @returns 
+ */
+async function getDomainsByUserId(userId) {
+  const db = await getDb();
+  return db.all('SELECT * FROM domains WHERE userId=? order by expiryDate',userId);
+}
+
+/**
  * 通过ID获取域名
  * @param {*} id 
  * @returns 
@@ -27,8 +36,8 @@ async function getDomainById(id) {
 async function createDomain(domainData) {
   const db = await getDb();
   const { lastID } = await db.run(
-    'INSERT INTO domains (domain, name, note, expiryDate, issuer, lastChecked, certCheckError) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [domainData.domain, domainData.name, domainData.note, domainData.expiryDate, domainData.issuer, domainData.lastChecked, domainData.certCheckError]
+    'INSERT INTO domains (domain,userId, name, note, expiryDate, issuer, lastChecked, certCheckError) VALUES (?, ?,?, ?, ?, ?, ?, ?)',
+    [domainData.domain, domainData.userId, domainData.name, domainData.note, domainData.expiryDate, domainData.issuer, domainData.lastChecked, domainData.certCheckError]
   );
   return getDomainById(lastID);
 }
@@ -70,6 +79,7 @@ async function getDomainByDomainName(domain) {
 
 module.exports = {
   getAllDomains,
+  getDomainsByUserId,
   getDomainById,
   createDomain,
   updateDomain,

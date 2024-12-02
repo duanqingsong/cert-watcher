@@ -3,18 +3,19 @@
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/index"
 import { checkCertificate } from '@/lib/certCheck'
-import { updateDomain, getAllDomains, getDomainById, createDomain, getDomainsByUserId, deleteDomainById } from '@/models/Domain'
+import { updateDomain, getDomainById, createDomain, getDomainsByUserId, deleteDomainById } from '@/models/Domain'
 
 /**
  * 获取所有域名
  * @returns 
  */
-export async function getAllDomain() {
+export async function getMyAllDomain() {
   const session = await getServerSession(authOptions)
   if (!session) {
     return {success:1,data:'',message:'未授权'}
   }
-  const domains = await getAllDomains();
+  const userId=session?.user?.email?.id||0;
+  const domains = await getDomainsByUserId(userId);
   const data=JSON.parse(JSON.stringify(domains)) 
   return {success:1,data,message:''}
 }
@@ -29,15 +30,19 @@ export async function saveDomain(data) {
   if (!session) {
     throw new Error('未授权')
   }
+  const userId=session?.user?.email?.id||0;
+  console.log('saveDomain userId:',userId);
   let newData=null;
   if (data.id) {
     newData= await updateDomain(data.id, {
+      userId:userId,
       name: data.name,
       domain: data.domain,
       note: data.note
     })
   } else {
     newData= await createDomain({
+      userId:userId,
       name: data.name,
       domain: data.domain,
       note: data.note
@@ -64,20 +69,7 @@ export async function deleteDomain(id) {
   return {success:1,data:'',message:''}
 }
 
-/**
- * 分页获取域名
- * @param {*} page 
- * @param {*} pageSize 
- * @returns 
- */
-export async function pageDomains(page, pageSize) {
-  const session = await getServerSession(authOptions)
-  if (!session) {
-    throw new Error('未授权')
-  }
 
-  return await getDomainsByUserId(session.user.id, page, pageSize)
-}
 
 /**
  * 通过id获取域名
@@ -136,12 +128,15 @@ export async function checkDomainById(id) {
  * 检查所有证书
  * @returns 
  */
-export async function checkAllDomain() {
+export async function checkMyDomains() {
   const session = await getServerSession(authOptions)
   if (!session) {
     return {success:1,data:'',message:'未授权'}
   }
-  let domains = await getAllDomains();
+  const userId=session?.user?.email?.id||0;
+  console.log('userId:',userId);
+  let domains = await getDomainsByUserId(userId);
+  console.log('domains:',domains);
   domains=JSON.parse(JSON.stringify(domains))
   for (const domain of domains) {
     try {
