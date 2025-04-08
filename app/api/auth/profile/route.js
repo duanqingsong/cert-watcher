@@ -3,7 +3,7 @@ import { User } from '@/models/User';
 import { verify } from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
-export async function GET(request) {
+export async function GET() {
   try {
     const token = cookies().get('auth_token')?.value;
     if (!token) {
@@ -24,7 +24,7 @@ export async function GET(request) {
     }
 
     // 不返回密码等敏感信息
-    const { password, ...userInfo } = user;
+    const {  ...userInfo } = user;
     return NextResponse.json({ user: userInfo });
   } catch (error) {
     console.error('获取用户信息错误:', error);
@@ -58,7 +58,7 @@ export async function PUT(request) {
 
     await User.updateNickname(user.id, nickname);
     const updatedUser = await User.findById(user.id);
-    const { password, ...userInfo } = updatedUser;
+    const {  ...userInfo } = updatedUser;
 
     return NextResponse.json({
       message: '更新成功',

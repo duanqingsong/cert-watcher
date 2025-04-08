@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import {useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next'; // 引入国际化支持
 
 export default function VerifyEmail() {
-  const router = useRouter();
+  // const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState('verifying'); // verifying, success, error
   const { t } = useTranslation(); // 初始化翻译

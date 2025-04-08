@@ -9,7 +9,6 @@ import { Loader2 } from "lucide-react"
 import {
   Alert,
   AlertDescription,
-  AlertTitle,
 } from "@/components/ui/alert"
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
 import { useTranslation } from 'react-i18next'
