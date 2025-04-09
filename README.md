@@ -30,7 +30,7 @@ yarn start
 # cron server启动方式
 
 ```js
-node cron-server.js    --env=production
+node cron-server.js --env=production
 ```
 
 + ## 环境变量配置
@@ -62,3 +62,16 @@ node cron-server.js    --env=production
 + - `SMTP_*`: 邮件服务器配置
 + - `NEXT_PUBLIC_APP_URL`: 应用访问地址
 
+
+api.zuimei.utour.xin|醉美-APP
+proxy.utour.xin|导游助手-代理
+wx.gdtour.hk|广东-小程序
+img.gdtour.hk|广东-图片
+api.gdtour.hk|广东-APP
+8d.api.utour.xin|八达小程序
+img.bada.hk|八达-图片
+bada.hk|八达-网站
+gdtour.hk|广东旅游网站
+res.gdtour.hk|广东旅游-PDF
+bracexpo.com|一带一路
+travelx.pro|travelx网站
