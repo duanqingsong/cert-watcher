@@ -15,6 +15,7 @@ module.exports = {
       // 关键配置
       autorestart: true,          // 保持应用常驻
       watch: false,               // 关闭文件监听
+      exec_mode: "fork",          // 使用 fork 模式
       instances: 1,               // 单实例运行
       env_production: {
         NODE_ENV: "production",  // 统一通过环境变量传递
