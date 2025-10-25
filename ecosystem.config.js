@@ -35,11 +35,20 @@ module.exports = {
       repo : 'git@github.com:duanqingsong/cert-watcher.git',
       path : '/root/cert-watcher',
       'pre-deploy-local': '',
-      'post-deploy' : `source ~/.nvm/nvm.sh && 
-        yarn && 
-        yarn build && 
-        pm2 delete cert-watcher-3009 cert-watcher-job || true && 
-        pm2 start ecosystem.config.js --env production`,
+      'post-deploy' : [
+        'echo "开始执行 post-deploy..."',
+        'source ~/.nvm/nvm.sh',
+        'echo "Node版本: $(node -v)"',
+        'echo "开始安装依赖..."',
+        'yarn',
+        'echo "开始构建..."', 
+        'yarn build',
+        'echo "停止旧进程..."',
+        'pm2 delete cert-watcher-3009 cert-watcher-job || true',
+        'echo "启动新进程..."',
+        'pm2 start ecosystem.config.js --env production',
+        'echo "部署完成!"'
+      ].join(' && '),
       'pre-setup': ''
     }
   }
