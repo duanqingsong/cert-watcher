@@ -3,11 +3,21 @@ const dotenv = require('dotenv');
 const path = require('path');
 const { performCertificateCheck,notifyCertificateExpiry } = require('./lib/certCheck');
 
-// 从命令行参数获取 .env 文件路径
+// 从命令行参数或环境变量获取 .env 文件路径
 const envFileArg = process.argv.find(arg => arg.startsWith('--env=')) || '--env=';
 const envFilePath = envFileArg.split('=')[1];
-const fileName=envFilePath?`.env.${envFilePath}`:'.env';
-const fullPath = path.resolve(process.cwd(),fileName);
+
+// 如果没有通过命令行参数指定，则检查 NODE_ENV 环境变量
+let fileName;
+if (envFilePath) {
+  fileName = `.env.${envFilePath}`;
+} else if (process.env.NODE_ENV && process.env.NODE_ENV !== 'development') {
+  fileName = `.env.${process.env.NODE_ENV}`;
+} else {
+  fileName = '.env';
+}
+
+const fullPath = path.resolve(process.cwd(), fileName);
 console.log('env path:', fileName);
 // 加载 .env 文件
 dotenv.config({ path: fullPath });
