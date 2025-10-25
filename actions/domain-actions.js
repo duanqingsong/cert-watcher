@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/index"
 import { checkCertificate } from '@/lib/certCheck'
 import { updateDomain, getDomainById, createDomain, getDomainsByUserId, deleteDomainById } from '@/models/Domain'
+import { redirect } from 'next/navigation'
 
 /**
  * 获取所有域名
@@ -12,7 +13,7 @@ import { updateDomain, getDomainById, createDomain, getDomainsByUserId, deleteDo
 export async function getMyAllDomain() {
   const session = await getServerSession(authOptions)
   if (!session) {
-    return {success:1,data:'',message:'未授权'}
+    redirect('/login?error=SessionExpired')
   }
   const userId=session?.user?.email?.id||0;
   const domains = await getDomainsByUserId(userId);
@@ -28,7 +29,7 @@ export async function getMyAllDomain() {
 export async function saveDomain(data) {
   const session = await getServerSession(authOptions)
   if (!session) {
-    throw new Error('未授权')
+    redirect('/login?error=SessionExpired')
   }
   const userId=session?.user?.email?.id||0;
   console.log('saveDomain userId:',userId);
@@ -62,8 +63,7 @@ export async function saveDomain(data) {
 export async function deleteDomain(id) {
   const session = await getServerSession(authOptions)
   if (!session) {
-    console.error('未授权')
-    return {success:0,data:'',message:'未授权'}
+    redirect('/login?error=SessionExpired')
   }
   await deleteDomainById(id)
   return {success:1,data:'',message:''}
@@ -79,7 +79,7 @@ export async function deleteDomain(id) {
 export async function getDomain(id) {
   const session = await getServerSession(authOptions)
   if (!session) {
-    throw new Error('未授权')
+    redirect('/login?error=SessionExpired')
   }
 
   return await getDomainById(id)
@@ -93,7 +93,7 @@ export async function getDomain(id) {
 export async function checkDomainById(id) {
   const session = await getServerSession(authOptions)
   if (!session) {
-    throw new Error('未授权')
+    redirect('/login?error=SessionExpired')
   }
 
   try {
@@ -131,7 +131,7 @@ export async function checkDomainById(id) {
 export async function checkMyDomains() {
   const session = await getServerSession(authOptions)
   if (!session) {
-    return {success:1,data:'',message:'未授权'}
+    redirect('/login?error=SessionExpired')
   }
   const userId=session?.user?.email?.id||0;
   console.log('userId:',userId);

@@ -38,9 +38,7 @@ node cron-server.js --env=production
 + 创建 `.env.local` 文件并配置以下环境变量：
 + 
 + ```plaintext
-+ # MongoDB 配置
-+ MONGODB_URI=mongodb://localhost:27017/your_database
-+ 
+
 + # JWT 配置
 + JWT_SECRET=your_jwt_secret_key
 + 
@@ -57,7 +55,6 @@ node cron-server.js --env=production
 + 
 + ### 环境变量说明
 + 
-+ - `MONGODB_URI`: MongoDB 数据库连接地址
 + - `JWT_SECRET`: JWT 令牌加密密钥
 + - `SMTP_*`: 邮件服务器配置
 + - `NEXT_PUBLIC_APP_URL`: 应用访问地址

@@ -19,7 +19,8 @@ module.exports = {
       instances: 1,               // 单实例运行
       env_production: {
         NODE_ENV: "production",  // 统一通过环境变量传递
-        CRON_SCHEDULE: "* */6 * * *" // 实际 cron 表达式由代码读取
+        CRON_SCHEDULE: "* */6 * * *", // 每6小时检查一次证书
+        NOTIFY_SCHEDULE: "0 9 * * *" // 每天上午9点发送到期通知
       },
       // 日志配置（可选）
       error_file: "/root/logs/cron-error.log",
@@ -39,7 +40,8 @@ module.exports = {
       'post-deploy' : `source ~/.nvm/nvm.sh && 
         yarn && 
         yarn build && 
-        pm2 startOrReload ecosystem.config.js --env production`,
+        pm2 delete cert-watcher-3009 cert-watcher-job || true && 
+        pm2 start ecosystem.config.js --env production`,
       'pre-setup': ''
     }
   }

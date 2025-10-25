@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useRouter } from 'next/navigation'
@@ -13,6 +13,7 @@ import {
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
+import { toast } from 'react-hot-toast'
 import {
   Card,
   CardContent,
@@ -31,6 +32,13 @@ const LoginForm = (props) => {
   const router = useRouter();
   const { t } = useTranslation()
 
+  // 检查会话过期错误
+  useEffect(() => {
+    if (authError === 'SessionExpired') {
+      toast.error('会话已过期，请重新登录')
+    }
+  }, [authError])
+
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -44,7 +52,7 @@ const LoginForm = (props) => {
     e.preventDefault();
     setError(origin => ({ ...origin, callbackError: '' }));
     try {
-      const backUrl = callbackUrl || `/${params.locale}`;
+      const backUrl = callbackUrl || `/${params.locale}/dashboard`;
       setLoading(true);
       const result = await signIn("credentials", {
         redirect: false,
@@ -54,6 +62,7 @@ const LoginForm = (props) => {
       // console.log("result==>",result)
       // console.log("backUrl==>",backUrl)
       if (!result?.error) {
+        toast.success('登录成功')
         router.push(backUrl);
       } else {
         setLoading(false);
@@ -66,6 +75,7 @@ const LoginForm = (props) => {
       }
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   }
 
