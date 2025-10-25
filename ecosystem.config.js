@@ -18,9 +18,7 @@ module.exports = {
       exec_mode: "fork",          // 使用 fork 模式
       instances: 1,               // 单实例运行
       env_production: {
-        NODE_ENV: "production",  // 统一通过环境变量传递
-        CRON_SCHEDULE: "* */6 * * *", // 每6小时检查一次证书
-        NOTIFY_SCHEDULE: "0 9 * * *" // 每天上午9点发送到期通知
+        NODE_ENV: "production"  // 只保留 NODE_ENV，其他环境变量从 .env.production 文件读取
       },
       // 日志配置（可选）
       error_file: "/root/logs/cron-error.log",
